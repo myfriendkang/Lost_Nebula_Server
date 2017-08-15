@@ -1,6 +1,6 @@
 var socket;
 var market;
-var cylinderData = [0,00, 0, 0, 0, 0, 0, 0, 0, 0];
+var cylinderData = [0,0, 0, 0, 0, 0, 0, 0, 0, 0];
 var cylinderActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var cylinderInactive = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
 var height = 286;
@@ -32,7 +32,7 @@ $(document).ready(function() {
         clearIntervals();
         startValue = 100;
         cylinderIndexes = [];
-        cylinderData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        cylinderData =   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         cylinderActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         cylinderInactive = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
         initGraph();
