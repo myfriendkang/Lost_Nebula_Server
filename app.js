@@ -220,20 +220,30 @@ io.sockets.on('connection', function (socket) {
 */
   socket.on('updateValue', function (data) {
 
-    //markets[data.market_id].value = data.value;  origin keyue file
+    try {
+      markets[data.market_id].value = data.value;  //origin keyue file
 
+    }
+    catch (e) {
+      console.log(e);
+    }
+
+    /*
     if (typeof data.isObject != "undefined" && data.isObject == true) {
       markets[data.market_id].value = data.value;
+      console.log ('what is that ? = ' + data.value);
       if (data.value == 0) {
         markets[data.market_id].quantity = 0;
         console.log("Exploded");
         io.sockets.emit('updateQuantity', markets);
       }
     } else {
+
+      // data[0].quantity is problem
       markets[0].quantity = data[0].quantity;
       io.sockets.emit('updateValue', data);
     }
-
+*/
     ////////////////////////////////////////////////////////////////////////////////
     console.log(markets[0].quantity);
     var obj = { "value": markets[0].quantity };

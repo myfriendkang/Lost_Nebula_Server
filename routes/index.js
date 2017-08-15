@@ -5,11 +5,11 @@ var markets = [
    "market_id": 0,
    "market_name": "pool",
    "value": 1,
-   "quantity": 500
+   "quantity": 1000
  },
  {
    "market_id": 1,
-   "market_name": "Solar Panel",
+   "market_name": "Fuel Cell",
    "value": 100,
    "quantity": 0
  },

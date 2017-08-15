@@ -9,7 +9,7 @@ $(document).ready(function () {
         updateQuantity(data);
     });
 	//-------
-	
+
 	socket.on('updateQuantity', function (data) {
 
 		updateQuantity(data);
@@ -63,7 +63,8 @@ function populateMarketControls(data) {
 	})
 }
 
+//  Arduino Serial
 function serialBuyControl() {
 	socket.emit('buy', parseInt("2"));
-	// console.log("receive");
+	console.log("receive");
 }

@@ -139,9 +139,12 @@ function normalExplosion(data, market_id) {
             colorCode = "#00FF00";
             break;
     }
-    document.body.style.backgroundImage = "url(/images/market"+ market_id +"bg.png)"
-    document.body.style.color = colorCode;
-    document.body.classList.remove('market_explosion');
+   // current kueye one uncommnet both 2 comments
+   // document.body.style.backgroundImage = "url(/images/market"+ market_id +"bg.png)"
+   // document.body.style.color = colorCode;
+    //document.body.classList.remove('market_explosion');
+    
+    document.body.classList.remove('market'+ market_id +'_explosion');
 
     var svgGraph = document.getElementById('svgGraph');
     svgGraph.style.stroke = colorCode;
@@ -159,9 +162,13 @@ function drawExplosion(data, market_id) {
         return y(data.value)
     }).attr("r", 6).style("stroke", "#FF1A1A").style("stroke-width", 2);
 
-    document.body.style.backgroundImage = "url(/images/market2bg_explosion.png)";
-    document.body.style.color = "#FF1A1A";
-    document.body.classList.add('market_explosion');
+    // current kueye one uncommnet both 2 comments
+    //document.body.style.backgroundImage = "url(/images/market2bg_explosion.png)";
+    //document.body.style.color = "#FF1A1A";
+
+    document.body.classList.add('market'+ market_id +'_explosion');  // From Felix
+    
+    //document.body.classList.add('market_explosion');
 
     var svgGraph = document.getElementById('svgGraph');
     svgGraph.style.stroke = "#FF1A1A";
@@ -193,6 +200,7 @@ function tick(svg, valueline) {
             socket.emit('updateValue', {
                 'market_id': market.market_id,
                 'value': marketData[currentIndex].value
+               // 'isObject': true  //from felix
             });
             currentIndex++;
             setTimeout(tick, (nextTime - currentTime) * interval);
