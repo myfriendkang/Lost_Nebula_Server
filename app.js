@@ -213,13 +213,13 @@ io.sockets.on('connection', function (socket) {
       console.log(data);
       if (data.market_id == 0) {console.log(data.value);}
       markets[data.market_id].value = data.value;  //origin keyue file
-      console.log("let check update Quantity == " + data[0].quantity);
+      //console.log("let check update Quantity == " + data[0].quantity);
     }
     catch (e) {
       console.log(e);
     }
     
-
+/*
     if (typeof data.isObject != "undefined" && data.isObject == true) {
       markets[data.market_id].value = data.value;
       console.log ('what is that ? = ' + data.value);
@@ -234,6 +234,7 @@ io.sockets.on('connection', function (socket) {
       markets[0].quantity = data[0].quantity;
       io.sockets.emit('updateValue', data);
     }
+    */
     
 
     ////////////////////////////////////////////////////////////////////////////////
