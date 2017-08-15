@@ -157,14 +157,14 @@ app.use('/', index);
 app.use('/users', users);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -176,16 +176,16 @@ app.use(function(err, req, res, next) {
 
 
 var fs = require("fs");
-function readJsonFileSync(filepath, encoding){
+function readJsonFileSync(filepath, encoding) {
 
-  if (typeof (encoding) == 'undefined'){
+  if (typeof (encoding) == 'undefined') {
     encoding = 'utf8';
   }
   var file = fs.readFileSync(filepath, encoding);
   return JSON.parse(file);
 }
 
-function getConfig(file){
+function getConfig(file) {
 
   var filepath = __dirname + '/' + file;
   return readJsonFileSync(filepath);
@@ -201,7 +201,7 @@ function reset() {
 io.sockets.on('connection', function (socket) {
   console.log('new client --' + socket.id);
   // io.sockets.emit('resetMarkets', markets);
-  socket.on('reset', function(i) {
+  socket.on('reset', function (i) {
     reset();
     console.log('reset button clicked');
     io.sockets.emit('resetMarkets', markets);
@@ -218,32 +218,42 @@ io.sockets.on('connection', function (socket) {
     //io.sockets.emit('brandon',obj);
   });
 */
-  socket.on('updateValue', function(data) {
+  socket.on('updateValue', function (data) {
 
-    markets[data.market_id].value = data.value;
+    //markets[data.market_id].value = data.value;  origin keyue file
+
+    if (typeof data.isObject != "undefined" && data.isObject == true) {
+      markets[data.market_id].value = data.value;
+      if (data.value == 0) {
+        markets[data.market_id].quantity = 0;
+        console.log("Exploded");
+        io.sockets.emit('updateQuantity', markets);
+      }
+    } else {
+      markets[0].quantity = data[0].quantity;
+      io.sockets.emit('updateValue', data);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////
     console.log(markets[0].quantity);
-    var obj = {"value": markets[0].quantity};
-    io.sockets.emit('unity',obj);
+    var obj = { "value": markets[0].quantity };
+    io.sockets.emit('unity', obj);
     //console.log('brandon update');
-    io.sockets.emit('brandon',obj);
+    io.sockets.emit('brandon', obj);
     ////////////////////////////////////////////////////////////////////////////////
     if (data.value == 0) {
       // data.value=10;
       markets[data.market_id].quantity = 0;
       // console.log("Exploded");
 
-      if(data.market_id == 2)
-      {
-        var obj = {"value": 0};
-        io.sockets.emit('unity',obj);
+      if (data.market_id == 2) {
+        var obj = { "value": 0 };
+        io.sockets.emit('unity', obj);
         //io.sockets.emit('brandon',obj);
         console.log("solar sail exploded");
 
       }
-      if(data.market_id == 4)
-      {
+      if (data.market_id == 4) {
         console.log("biomass exploded");
       }
 
@@ -256,7 +266,7 @@ io.sockets.on('connection', function (socket) {
 
       markets[i].quantity--;
 
-      markets[0].quantity +=markets[i].value;
+      markets[0].quantity += markets[i].value;
       //socket.emit('poolChange', markets[0].quantity);
       io.sockets.emit('updateQuantity', markets);
     }
@@ -265,7 +275,7 @@ io.sockets.on('connection', function (socket) {
     if ((markets[0].quantity >= markets[i].value) && (markets[i].value > 0)) {
 
       markets[i].quantity++;
-      markets[0].quantity -=markets[i].value;
+      markets[0].quantity -= markets[i].value;
       //socket.emit('poolChange', markets[0].quantity);
       io.sockets.emit('updateQuantity', markets);
     }

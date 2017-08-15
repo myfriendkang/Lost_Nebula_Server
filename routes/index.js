@@ -47,4 +47,8 @@ router.get('/market/:id', function(req, res, next) {
   res.render('market', { className: 'market'+req.params.id });
 });
 
+router.get('/market/:id/new', function(req, res, next) {
+  res.render('market_new', { className: 'market'+req.params.id });
+});
+
 module.exports = router;

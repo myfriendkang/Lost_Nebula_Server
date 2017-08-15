@@ -1,149 +1,191 @@
 div.current_value {
-position: absolute;
-top: 222px;
-left: 600px;
-width: 319px;
-height: 112px;
-border: 0px solid #000000;
-}
-
-div.num_capsules {
-position: absolute;
-top: 222px;
-left: 944px;
-width: 239px;
-height: 112px;
-border: 0px solid #000000;
-}
-
-div.graph {
-position: absolute;
-top: 400px;
-left: 110px;
-width: 239px;
-height: 112px;
-border: 0px solid #000000;
-}
-
-/*
-div.body {
-position: absolute;
-top: 0px;
-left: 0px;
-width: 1280px;
-height: 800px;
-border: 0px solid #00FFFF;
-}
-*/
-
-
-.market_explosion, body {
-  font: 12px "Orbitron", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  color: #FF1A1A;
-  background-image: url(/images/market2bg_explosion.png);
-}
-
-.market1, body {
-  font: 12px "Orbitron", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  color: #FF4AFF;
-  background-image: url(/images/market1bg.png);
-}
-
-.market2, body {
-  font: 12px "Orbitron", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  color: #00FFFF;
-  background-image: url(/images/market2bg.png);
-}
-
-.market3, body {
-  font: 12px "Orbitron", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  color: #FFD400;
-  background-image: url(/images/market3bg.png);
-}
-
-.market4, body {
-  font: 12px "Orbitron", Helvetica, Arial, sans-serif;
-  font-weight: bold;
-  color: #00FF00;
-  background-image: url(/images/market4bg.png);
-}
-
-a {
-  color: #00B7FF;
-}
-path { 
-  stroke: #00FFFF;
-  stroke-width: 3;
-  fill: none;
-}
- 
-.axis path,
-.axis line {
-	fill: none;
-	stroke: grey;
-	stroke-width: 0;
-	shape-rendering: crispEdges;
-}
-
-.axis text{
-  fill: #00FFFF;
-}
-
-.bigNumbers {
-  font-size: 4.5em;
-}
-
-#statusWrapper div {
-  float:left;
-  padding: 30px;
-}
-
-
-
-.market_explosion::before {
-  content: '';
-  width: 100%;
-  height: 100%;
   position: absolute;
-  display: block;
-  background-color: #000000;
-  z-index: 99999;
-
-  -webkit-animation: pulsate 1000ms ease-in-out;
-  -moz-animation: pulsate 1000ms ease-in-out;
-  -ms-animation: pulsate 1000ms ease-in-out;
-  animation: pulsate 1000ms ease-in-out;
-
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation-iteration-count: infinite;
-  -ms-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-}
-
-@-webkit-keyframes pulsate {
-    0% {opacity: 0.0; visibility: hidden;}
-    50% {opacity: 1.0; visibility: visible;}
-    100% {opacity: 0.0; visibility: hidden;}
-}
-
-@-moz-keyframes pulsate {
-    0% {opacity: 0.0; visibility: hidden;}
-    50% {opacity: 1.0; visibility: visible;}
-    100% {opacity: 0.0; visibility: hidden;}
-}
-
-@-o-keyframes pulsate {
-    0% {opacity: 0.0; visibility: hidden;}
-    50% {opacity: 1.0; visibility: visible;}
-    100% {opacity: 0.0; visibility: hidden;}
-}
-
-@keyframes pulsate {
-    0% {opacity: 0.0; visibility: hidden;}
-    50% {opacity: 1.0; visibility: visible;}
-    100% {opacity: 0.0; visibility: hidden;}
-}
+  top: 222px;
+  left: 600px;
+  width: 319px;
+  height: 112px;
+  border: 0px solid #000000;
+  }
+  
+  div.num_capsules {
+  position: absolute;
+  top: 222px;
+  left: 944px;
+  width: 239px;
+  height: 112px;
+  border: 0px solid #000000;
+  }
+  
+  div.graph {
+  position: absolute;
+  top: 400px;
+  left: 110px;
+  width: 239px;
+  height: 112px;
+  border: 0px solid #000000;
+  }
+  
+  div.barchart_data {
+  position: absolute;
+  top: 394px;
+  left: 214px;
+  width: 239px;
+  border: 0px solid #000000;
+  }
+  
+  div.barchart_active {
+  position: absolute;
+  top: 394px;
+  left: 214px;
+  width: 239px;
+  border: 0px solid #000000;
+  }
+  
+  div.barchart_inactive {
+  position: absolute;
+  top: 394px;
+  left: 214px;
+  width: 239px;
+  border: 0px solid #000000;
+  }
+  
+  /*
+  div.body {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 1280px;
+  height: 800px;
+  border: 0px solid #00FFFF;
+  }
+  */
+  
+  body {
+    transition: 1000ms background ease;
+  }
+  
+  body.market1 {
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #980BFC;
+    background-image: url(/images/market1bg1.png);
+  }
+  
+  body.market2 {
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #00FFFF;
+    background-image: url(/images/market2bg.png);
+  }
+  
+  body.market3 {
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #FFD400;
+    background-image: url(/images/market3bg.png);
+  }
+  
+  body.market4 {
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #00FF00;
+    background-image: url(/images/market4bg.png);
+  }
+  
+  body.market2_explosion {
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #FF1A1A;
+    background-image: url(/images/market2bg_explosion.png);
+  }
+  
+  body.market4_explosion {
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #FF1A1A;
+    background-image: url(/images/market4bg_explosion.png);
+  }
+  
+  a {
+    color: #00B7FF;
+  }
+  path { 
+    stroke: #00FFFF;
+    stroke-width: 3;
+    fill: none;
+  }
+   
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 0;
+    shape-rendering: crispEdges;
+  }
+  
+  .axis text{
+    fill: #00FFFF;
+  }
+  
+  .bigNumbers {
+    font-size: 4.5em;
+  }
+  
+  #statusWrapper div {
+    float:left;
+    padding: 30px;
+  }
+  
+  
+  
+  .market_explosion::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: block;
+    background-color: #000000;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 99999;
+  
+    -webkit-animation: pulsate 1000ms ease-in-out;
+    -moz-animation: pulsate 1000ms ease-in-out;
+    -ms-animation: pulsate 1000ms ease-in-out;
+    animation: pulsate 1000ms ease-in-out;
+  }
+  
+  .pulsate {
+    -webkit-animation: pulsate 500ms ease-in-out;
+    -moz-animation: pulsate 500ms ease-in-out;
+    -ms-animation: pulsate 500ms ease-in-out;
+    animation: pulsate 500ms ease-in-out;
+  }
+  
+  @-webkit-keyframes pulsate {
+      0% {opacity: 0.0; visibility: hidden;}
+      25% {opacity: 1.0; visibility: visible;}
+      50% {opacity: 0.0; visibility: hidden;}
+      75% {opacity: 1.0; visibility: visible;}
+  }
+  
+  @-moz-keyframes pulsate {
+      0% {opacity: 0.0; visibility: hidden;}
+      25% {opacity: 1.0; visibility: visible;}
+      50% {opacity: 0.0; visibility: hidden;}
+      75% {opacity: 1.0; visibility: visible;}
+  }
+  
+  @-o-keyframes pulsate {
+      0% {opacity: 0.0; visibility: hidden;}
+      25% {opacity: 1.0; visibility: visible;}
+      50% {opacity: 0.0; visibility: hidden;}
+      75% {opacity: 1.0; visibility: visible;}
+  }
+  
+  @keyframes pulsate {
+      0% {opacity: 0.0; visibility: hidden;}
+      25% {opacity: 1.0; visibility: visible;}
+      50% {opacity: 0.0; visibility: hidden;}
+      75% {opacity: 1.0; visibility: visible;}
+  }
