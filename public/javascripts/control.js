@@ -2,7 +2,7 @@
 var socket;
 $(document).ready(function() {
 	//socket = io.connect('http://192.168.1.139:8080');  keyue ip address
-	socekt = io.connect('http://localhost:8080/');
+	socekt = io.connect('http://localhost:8080');
   socket.on('updateQuantity', function (data) {
 
     updateQuantity(data);
