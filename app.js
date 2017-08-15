@@ -13,7 +13,7 @@ var app = express();
 var server = require('http').createServer(app);
 server.listen(8080);
 var io = require('socket.io').listen(server);
-
+/*
 //serial to Arduino
 
 var serialport = require('serialport');
@@ -138,7 +138,7 @@ myPort.on('error', function(data){
 });
 
 ///
-
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
