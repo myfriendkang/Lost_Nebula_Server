@@ -99,14 +99,29 @@ function updateGraph(/*svg, valueline, */market_id) {
                 colorCode = "#00FF00";
                 break;
         }
-        d3.select(".line").attr("d", valueline(graphedData));
+
+        var path = document.querySelector('.line');
+        var oldLenth = path.getTotalLength();
+        d3.select(".line")
+            .attr("d", valueline(graphedData))
+            /*.attr("stroke-dasharray", function(d){ return this.getTotalLength() })
+            .attr("stroke-dashoffset", function(d){ return (this.getTotalLength() - oldLen); })
+            .transition()
+                .duration(interval)
+                .ease("linear")
+                .attr("stroke-dashoffset", 0)*/;
+        var masking = path.getBBox();
+        var maskingWidth = masking.width;
+        d3.select("#clip>rect").transition().duration(interval + 5000).ease("linear").attr("width", maskingWidth);
+
+        console.log("updateGraph!");
         graphedData.forEach(function(data, index) {
             if (data.value == 0 && document.body.style.color != "#FF1A1A") {
                 drawExplosion(data, market_id);
             } else {
-            	if (document.body.style.color != colorCode) {
-            		normalExplosion(data, market_id);
-            	}
+                if (document.body.style.color != colorCode) {
+                    normalExplosion(data, market_id);
+                }
             }
         });
     } catch (e) {
