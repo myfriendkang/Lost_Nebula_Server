@@ -16,7 +16,7 @@ var _currentIndex = 0;
 var _currentTime, _nextTime;
 
 $(document).ready(function() {
-    socket = io.connect('http://192.168.1.139:8080');
+   socket = io.connect('http://192.168.1.139:8080');// Kyue ip address
     socket.on('resetMarkets', function(data) {
         market = data[parseInt(window.location.href.slice(-1))];
         currentTime = startTime;

@@ -15,6 +15,7 @@ server.listen(8080);
 var io = require('socket.io').listen(server);
 
 //serial to Arduino
+
 var serialport = require('serialport');
 portname = '/dev/cu.usbserial-DN01Q7W1';
 
@@ -22,7 +23,6 @@ var myPort = new serialport(portname,{
   baudRate: 115200,
   parser: serialport.parsers.readline("\n")
 });
-
 
 function arduinoData(data){
   console.log(data);
