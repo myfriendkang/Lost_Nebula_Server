@@ -6,6 +6,7 @@ $(document).ready(function () {
 
 	//Add from Felix ----
 	socket.on('updateValue', function(data) {
+		console.log(data);
         updateQuantity(data);
     });
 	//-------

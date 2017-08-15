@@ -20,7 +20,10 @@ $(document).ready(function() {
         if (typeof market == "undefined") {
             market = {
                 market_id: 1,
-                market_name: "Fuel Cell"
+                market_name: "Fuel Cell",
+                quantity: 0,
+                cylinder: 0,
+                value: 100
             };
         }
         $('h1').html(market.market_name);
@@ -35,23 +38,27 @@ $(document).ready(function() {
         initGraph();
     })
     socket.on('updateQuantity', function(data) {
+        console.log("quantity: " + market.quantity);
+        var buyOrSell =  market.quantity < data[market.market_id].quantity;
         market.quantity = data[market.market_id].quantity;
-        updateQuantity(data, market);
+        updateQuantity(data, market, buyOrSell);
     });
 });
 
-function updateQuantity(data, market) {
+function updateQuantity(data, market, buyOrSell) {
     $('#quantityNum').addClass('pulsate').html(data[market.market_id].quantity);
     setTimeout(function() {
         $('#valueNum').removeClass('pulsate');
     }, 600);
 
-    console.log(data[market.market_id]);
-    if (data[market.market_id].clicked == 'buy') {
-        var currentIndex = parseInt(data[market.market_id].cylinder);
+  
+    if (buyOrSell) {
+        var currentIndex = parseInt(market.cylinder);
+
         cylinderIndexes.push(currentIndex);
         cylinderActive[currentIndex] = startValue;
         cylinderData[currentIndex] = startValue;
+
         initGraph();
         $("#cylinder" + currentIndex + "_value p").html(startValue);
         intervalTimerArr[currentIndex] = setInterval(function(currentIndexParam) {
@@ -66,13 +73,15 @@ function updateQuantity(data, market) {
             } else {
                 clearIntervals(intervalTimerArr[currentIndexParam]);
             }
+            market.value = cylinderData[cylinderIndexes[0]];
+            socket.emit('updateValue', market);
         }, intervalTime, currentIndex);
+        market.cylinder++;
     } else {
         var removableCylinder = cylinderIndexes[0];
         var revokeValue = cylinderData[removableCylinder];
         console.log("revokeValue : " + revokeValue);
-        data[0].quantity = parseInt(data[0].quantity + revokeValue); 
-        socket.emit('updateValue', data);
+  
         cylinderIndexes.shift();
         $("#cylinder" + removableCylinder + "_value p").html(0);
         clearIntervals(intervalTimerArr[removableCylinder]);
@@ -80,6 +89,7 @@ function updateQuantity(data, market) {
         cylinderInactive[removableCylinder] = 100;
         cylinderData[removableCylinder] = 0;        
         initGraph();
+        market.cylinder--;
     }
 }
 

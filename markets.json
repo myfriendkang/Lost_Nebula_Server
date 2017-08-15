@@ -9,7 +9,8 @@
    "market_id": 1,
    "market_name": "Fuel Cell",
    "value": 100,
-   "quantity": 0
+   "quantity": 0,
+   "initValue": 100
  },
  {
    "market_id": 2,
