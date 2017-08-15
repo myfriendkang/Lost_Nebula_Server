@@ -27,7 +27,7 @@ var myPort = new serialport(portname,{
 function arduinoData(data){
   console.log(data);
   var obj = {"value": markets[0].quantity};
-
+  console.log('test VC');
   //io.sockets.emit('brandon',obj);
   console.log("already Sent!!");
   io.sockets.emit('unity',obj);
