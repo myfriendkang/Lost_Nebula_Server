@@ -11,8 +11,9 @@ var users = require('./routes/users');
 
 var app = express();
 var server = require('http').createServer(app);
-server.listen(8080);
 var io = require('socket.io').listen(server);
+server.listen(8080);
+
 /*
 //serial to Arduino
 
