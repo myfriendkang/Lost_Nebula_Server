@@ -206,29 +206,22 @@ io.sockets.on('connection', function (socket) {
     console.log('reset button clicked');
     io.sockets.emit('resetMarkets', markets);
   });
-  /*
-  socket.on('poolUpdate', function(data){
-    //console.log('brandon got data');
-    markets[data.market_id].value = data.value;
-    // console.log(data.market_id);
-    // console.log(data.value);
-    ////////////////////////////////////////////////////////////////////////////////
-  //  console.log(markets[0].quantity);
-    var obj = {"value": markets[0].quantity};
-    //io.sockets.emit('brandon',obj);
-  });
-*/
+
   socket.on('updateValue', function (data) {
 
+    console.log("let check update data value == " + data[0].value);
+    console.log("let check update Quantity == " + data[0].quantity);
+    
+    /*
     try {
       markets[data.market_id].value = data.value;  //origin keyue file
-
+      console.log("let check update Quantity == " + data[0].quantity);
     }
     catch (e) {
       console.log(e);
     }
+    */
 
-    /*
     if (typeof data.isObject != "undefined" && data.isObject == true) {
       markets[data.market_id].value = data.value;
       console.log ('what is that ? = ' + data.value);
@@ -243,7 +236,8 @@ io.sockets.on('connection', function (socket) {
       markets[0].quantity = data[0].quantity;
       io.sockets.emit('updateValue', data);
     }
-*/
+    
+
     ////////////////////////////////////////////////////////////////////////////////
     console.log(markets[0].quantity);
     var obj = { "value": markets[0].quantity };

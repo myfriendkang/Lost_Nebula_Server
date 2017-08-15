@@ -36,6 +36,7 @@ $(document).ready(function() {
     })
     socket.on('updateQuantity', function(data) {
         market.quantity = data[market.market_id].quantity;
+        
         updateQuantity(data, market);
     });
 });

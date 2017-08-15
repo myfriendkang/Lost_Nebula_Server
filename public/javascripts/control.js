@@ -5,9 +5,11 @@ $(document).ready(function () {
 	socket = io.connect('http://localhost:8080');
 
 	//Add from Felix ----
+	
 	socket.on('updateValue', function(data) {
-        updateQuantity(data);
-    });
+	    updateQuantity(data);
+	});
+	
 	//-------
 
 	socket.on('updateQuantity', function (data) {
