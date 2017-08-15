@@ -209,18 +209,16 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('updateValue', function (data) {
 
-    console.log("let check update data value == " + data[0].value);
-    console.log("let check update Quantity == " + data[0].quantity);
-    
-    /*
     try {
+      console.log(data);
+      if (data.market_id == 0) {console.log(data.value);}
       markets[data.market_id].value = data.value;  //origin keyue file
       console.log("let check update Quantity == " + data[0].quantity);
     }
     catch (e) {
       console.log(e);
     }
-    */
+    
 
     if (typeof data.isObject != "undefined" && data.isObject == true) {
       markets[data.market_id].value = data.value;
@@ -279,7 +277,12 @@ io.sockets.on('connection', function (socket) {
     if ((markets[0].quantity >= markets[i].value) && (markets[i].value > 0)) {
 
       markets[i].quantity++;
-      markets[0].quantity -= markets[i].value;
+      if (i == 1) {
+        markets[0].quantity -= markets[i].initValue;
+      } else {
+         markets[0].quantity -= markets[i].value;
+      }
+     
       //socket.emit('poolChange', markets[0].quantity);
       io.sockets.emit('updateQuantity', markets);
     }

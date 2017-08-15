@@ -7,9 +7,9 @@ $(document).ready(function () {
 	//Add from Felix ----
 	
 	socket.on('updateValue', function(data) {
-	    updateQuantity(data);
-	});
-	
+		console.log(data);
+        updateQuantity(data);
+    });
 	//-------
 
 	socket.on('updateQuantity', function (data) {

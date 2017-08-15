@@ -30,6 +30,7 @@ $(document).ready(function() {
         updateQuantity();
     })
     socket.on('updateQuantity', function(data) {
+        console.log(data);
         market.quantity = data[market.market_id].quantity;
         updateQuantity();
     });
