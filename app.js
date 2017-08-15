@@ -204,6 +204,7 @@ io.sockets.on('connection', function (socket) {
   // io.sockets.emit('resetMarkets', markets);
   socket.on('reset', function(i) {
     reset();
+    console.log('reset button clicked');
     io.sockets.emit('resetMarkets', markets);
   });
   /*
