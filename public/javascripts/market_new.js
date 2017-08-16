@@ -1,110 +1,151 @@
 var socket;
 var market;
-var cylinderData = [0,0, 0, 0, 0, 0, 0, 0, 0, 0];
-var cylinderActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var cylinderInactive = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
-var height = 286;
-var width = 1000;
-var yScale = d3.scale.linear().domain([0, 200]).range([0, height]);
-var barWidth = 42;
-var barOffset = 59;
-var percentage = 10;
-var startValue = 100;
-var intervalTime = 3000;
-var intervalTimerArr = [];
-var cylinderIndexes = [];
+
+var height = 286, width = 959;
+var marginTop = 20;
+var animationDuration = 2000;
+var lifespan = 1; //in minutes
+ var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.57),
+    y = d3.scaleLinear().rangeRound([height,0]);
+var activeBars, valueBars, svg;
+var intervalTime = 2000;
+//  #cylinder6_value(style='width:66px;position: absolute;top: 326px;left: 808px;text-align:center;')
+ //   p.cylinders_value_text 0
+
+var cylinders = new Array(10);
 $(document).ready(function() {
     socket = io.connect('http://localhost:8080');
     socket.on('resetMarkets', function(data) {
         market = data[parseInt(window.location.href.slice(-1))];
-        if (typeof market == "undefined") {
-            market = {
-                market_id: 1,
-                market_name: "Fuel Cell",
-                quantity: 0,
-                cylinder: 0,
-                value: 100
-            };
-        }
+        
         $('h1').html(market.market_name);
         $('#marketname').html(market.market_name);
         $('#quantityNum').addClass('pulsate').html(0);
-        clearIntervals();
-        startValue = 100;
-        cylinderIndexes = [];
-        cylinderData =   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        cylinderActive = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        cylinderInactive = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100];
-        initGraph();
+
+        for (var i=0; i<cylinders.length; i++) {
+           
+            cylinders[i] = {'active': false,
+                            'index': i,
+                            'startTime': 0,
+                            'initValue': market.initValue,
+                            'value': market.initValue};
+            $(".barchart_nums").append('<p class="barChartValueText barChartValueText' + i +'" style="left:' + (i*101) + 'px">0</p>')
+        }
+        drawGraph();
+       
     })
     socket.on('updateQuantity', function(data) {
-        console.log("quantity: " + market.quantity);
-        var buyOrSell =  market.quantity < data[market.market_id].quantity;
+        var buyOrSell = (market.quantity < data[market.market_id].quantity);
         market.quantity = data[market.market_id].quantity;
-        updateQuantity(data, market, buyOrSell);
+        updateQuantity(buyOrSell);
+        
     });
+
 });
+function drawGraph() {
+   if (!svg) svg = d3.select('.barchart_data').append('svg').attr('width', width).attr('height', height);
 
-function updateQuantity(data, market, buyOrSell) {
-    $('#quantityNum').addClass('pulsate').html(data[market.market_id].quantity);
-    setTimeout(function() {
-        $('#valueNum').removeClass('pulsate');
-    }, 600);
 
-  
-    if (buyOrSell) {
-        var currentIndex = parseInt(market.cylinder);
+   
 
-        cylinderIndexes.push(currentIndex);
-        cylinderActive[currentIndex] = startValue;
-        cylinderData[currentIndex] = startValue;
+    x.domain(cylinders.map(function(d) { return d.index; }));
+    y.domain([0, market.maxValue]);
 
-        initGraph();
-        $("#cylinder" + currentIndex + "_value p").html(startValue);
-        intervalTimerArr[currentIndex] = setInterval(function(currentIndexParam) {
-            var currentValue = cylinderInactive[currentIndexParam];
-            var percentageValue = (currentValue * percentage) / 100;
-            currentValue = Math.floor(currentValue + percentageValue);
-            if (currentValue < 200) {
-                cylinderInactive[currentIndexParam] = currentValue;
-                cylinderData[currentIndexParam] = currentValue;
-                initGraph();
-                $("#cylinder" + currentIndexParam + "_value p").html(currentValue);
-            } else {
-                clearIntervals(intervalTimerArr[currentIndexParam]);
-            }
-            market.value = cylinderData[cylinderIndexes[0]];
-            socket.emit('updateValue', market);
-        }, intervalTime, currentIndex);
-        market.cylinder++;
-    } else {
-        var removableCylinder = cylinderIndexes[0];
-        var revokeValue = cylinderData[removableCylinder];
-        console.log("revokeValue : " + revokeValue);
-  
-        cylinderIndexes.shift();
-        $("#cylinder" + removableCylinder + "_value p").html(0);
-        clearIntervals(intervalTimerArr[removableCylinder]);
-        cylinderActive[removableCylinder] = 0;
-        cylinderInactive[removableCylinder] = 100;
-        cylinderData[removableCylinder] = 0;        
-        initGraph();
-        market.cylinder--;
-    }
+    g = svg.append("g");
+
+    g.selectAll(".inactive")
+    .data(cylinders)
+    .enter().append("rect")
+      .attr("class", "inactive")
+      .attr("x", function(d) { return x(d.index); })
+      .attr("y", function(d) { return y(d.initValue); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return y( d.initValue); })
+      .style('fill', market.color)
+      .style("opacity", 0.25)
+      .attr("rx", 21)
+      .attr("ry", 21);
+      
+    activeBars = svg.append("g");
+    valueBars = svg.append("g");
+
+   
+   updateBars(activeBars, animationDuration, "initValue");
+
+
+
+   window.setInterval(updateNums, intervalTime);
 }
+function updateNums() {
+    var currentValue = market.initValue;
+    for (var i=0; i<cylinders.length; i++) {
+        if (cylinders[i].active) {
+          
+             cylinders[i].value = Math.min(market.maxValue, (Date.now() - cylinders[i].startTime) * (market.maxValue - market.initValue) / (lifespan * 60000) + market.initValue);
+             
+           if (currentValue == market.initValue) currentValue = Math.round(cylinders[i].value);
+            $(".barChartValueText" + i).html(Math.round(cylinders[i].value));
+             console.log(cylinders[i].value);
 
-function clearIntervals(intervalId) {
-    if (typeof intervalId != "undefined" && intervalId != "") {
-        clearInterval(intervalId);
-        $("#cylinder" + intervalId + "_value p").html(0);
-    } else {
-        for (i in intervalTimerArr) {
-            clearInterval(intervalTimerArr[i]);
-            $("#cylinder" + i + "_value p").html(0);
         }
+       
     }
+    updateBars(valueBars, animationDuration, "value", 0.5);
+    socket.emit('updateValue', {
+                'market_id': market.market_id,
+                'value': currentValue
+        });
+}
+function updateQuantity(buyOrSell) {
+     $('#quantityNum').html(market.quantity);
+     if (buyOrSell) {
+        for (var i=0; i<cylinders.length; i++) {
+
+            if (!cylinders[i].active) {
+                cylinders[i].active = true;
+                cylinders[i].startTime = Date.now();
+                $(".barChartValueText" + i).html(market.initValue);
+                break;
+            }
+         }
+     } else {
+         for (var i=0; i<cylinders.length; i++) {
+
+            if (cylinders[i].active) {
+                cylinders[i].active = false;
+                cylinders[i].startTime = 0;
+                cylinders[i].value = market.initValue;
+                $(".barChartValueText" + i).html("0");
+                break;
+            }
+         }
+     }
+     
+     updateBars(activeBars, animationDuration, "initValue",1);
+     updateBars(valueBars, animationDuration, "value",0.5);
 }
 
+function updateBars(target, duration, property, opacity) {
+
+  var active = target.selectAll("rect").data(cylinders);
+
+  active.attr("class", "update");
+
+  active.enter().append("rect")
+
+          .attr("x", function(d) { return x(d.index); })
+          .attr("width", x.bandwidth())
+          .style('fill', market.color)
+          .style("opacity", opacity)
+          .attr("rx", 21)
+          .attr("ry", 21)
+    .merge(active)
+        .transition().duration(duration)
+        .attr("y", function(d) { return  y((d.active? d[property] : 0)); })
+        .attr("height", function(d) { return y((d.active ? (market.maxValue - d[property]) : market.maxValue)); });
+
+  active.exit().remove();
+}
 var bar_data,bar_active_data,bar_inactive_data;
 function initGraph() {
     

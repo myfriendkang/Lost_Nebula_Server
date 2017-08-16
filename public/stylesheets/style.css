@@ -28,11 +28,28 @@ div.current_value {
   div.barchart_data {
   position: absolute;
   top: 394px;
-  left: 214px;
+  left: 210px;
   width: 239px;
   border: 0px solid #000000;
   }
-  
+  div.barchart_nums {
+    left: 203px;
+    top: 325px;
+    position: absolute;
+  }
+  .barChartValueText {
+    position: absolute;
+    display: block;
+    font-size: 20px;
+    text-align: center;
+    width: 66px;
+  }
+  svg text {
+    fill: #980BFC;
+    font: 12px "Orbitron", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    color: #980BFC;
+  }
   div.barchart_active {
   position: absolute;
   top: 394px;
