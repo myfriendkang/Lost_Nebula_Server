@@ -70,7 +70,7 @@ function drawGraph() {
     valueBars = svg.append("g");
 
    
-   updateBars(activeBars, animationDuration, "initValue");
+   updateBars(activeBars, animationDuration, "initValue", 0.5);
 
 
 
