@@ -10,7 +10,9 @@
    "market_name": "Fuel Cell",
    "value": 100,
    "quantity": 0,
-   "initValue": 100
+   "initValue": 100,
+   "maxValue": 200,
+   "color": "#980BFC"
  },
  {
    "market_id": 2,

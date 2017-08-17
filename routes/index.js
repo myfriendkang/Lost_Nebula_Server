@@ -44,11 +44,11 @@ router.get('/', function(req, res, next) {
 }*/
 
 router.get('/market/:id', function(req, res, next) {
-  res.render('market', { className: 'market'+req.params.id });
+  res.render((req.params.id == 1)? 'market_new' : 'market', { className: 'market'+req.params.id });
 });
-
+/*
 router.get('/market/:id/new', function(req, res, next) {
   res.render('market_new', { className: 'market'+req.params.id });
 });
-
+*/
 module.exports = router;
