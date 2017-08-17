@@ -1,7 +1,7 @@
 
 var socket;
 $(document).ready(function () {
-	//socket = io.connect('http://192.168.1.139:8080');  keyue ip address
+	//socket = io.connect('http://192.168.1.139:8080');  //keyue ip address
 	socket = io.connect('http://localhost:8080');
 
 	//Add from Felix ----
