@@ -41,8 +41,8 @@ function drawGraph(market_id) {
     $('.graph').html('');
     var svg = d3.select('.graph').append('svg').attr('class', 'chart').attr('width', width + 50).attr('height', height + 50);
     svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
-    d3.csv("http://192.168.1.139:8080/data/data" + market_id + ".csv", function(err, data) {
-   // d3.csv("http://localhost:8080/data/data" + market_id + ".csv", function(err, data) {
+   // d3.csv("http://192.168.1.139:8080/data/data" + market_id + ".csv", function(err, data) {
+    d3.csv("http://localhost:8080/data/data" + market_id + ".csv", function(err, data) {
         data.forEach(function(d, i) {
             d.time = parseInt(d.time);
             d.value = parseInt(d.value);
