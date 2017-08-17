@@ -11,6 +11,7 @@ var barOffset = 59;
 var percentage = 10;
 var startValue = 100;
 var intervalTime = 3000;
+
 var intervalTimerArr = [];
 var cylinderIndexes = [];
 $(document).ready(function() {
@@ -51,7 +52,6 @@ function updateQuantity(data, market, buyOrSell) {
         $('#valueNum').removeClass('pulsate');
     }, 600);
 
-  
     if (buyOrSell) {
         var currentIndex = parseInt(market.cylinder);
 
