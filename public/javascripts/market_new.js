@@ -35,9 +35,12 @@ $(document).ready(function() {
        
     })
     socket.on('updateQuantity', function(data) {
-        var buyOrSell = (market.quantity < data[market.market_id].quantity);
-        market.quantity = data[market.market_id].quantity;
-        updateQuantity(buyOrSell);
+        if (market.quantity !== data[market.market_id].quantity) {
+           var buyOrSell = (market.quantity < data[market.market_id].quantity);
+           market.quantity = data[market.market_id].quantity;
+           updateQuantity(buyOrSell);
+        }
+       
         
     });
 
