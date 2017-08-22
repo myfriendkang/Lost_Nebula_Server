@@ -4,7 +4,7 @@ var marketData = [];
 var graphedData = [];
 var width = 1250,
     height = 270;
-var startTime = 25;
+var startTime = 0;
 var interval = 6000;
 //var interval = 5;
 var currentIndex = 0;
@@ -43,13 +43,13 @@ function drawGraph(market_id) {
     svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
    // d3.csv("http://192.168.1.139:8080/data/data" + market_id + ".csv", function(err, data) {
     d3.csv("http://localhost:8080/data/data" + market_id + ".csv", function(err, data) {
-        data.forEach(function(d, i) {
+        data.forEach(function(d) {  //deleted i, draw simple whole graph in one time
             d.time = parseInt(d.time);
             d.value = parseInt(d.value);
-            if (d.time <= startTime) {
-                currentIndex = i;
-                graphedData.push(d);
-            }
+//            if (d.time <= startTime) {
+//                currentIndex = i;
+//                graphedData.push(d);
+//            }
         });
         marketData = data;
         // console.log(data);
@@ -112,7 +112,7 @@ function updateGraph(/*svg, valueline, */market_id) {
                 .attr("stroke-dashoffset", 0)*/;
         var masking = path.getBBox();
         var maskingWidth = masking.width;
-        d3.select("#clip>rect").transition().duration(interval + 5000).ease("linear").attr("width", maskingWidth);
+        d3.select("#clip>rect").transition().duration(interval + 6000).ease("linear").attr("width", maskingWidth);
 
         console.log("updateGraph!");
         graphedData.forEach(function(data, index) {
