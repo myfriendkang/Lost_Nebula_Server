@@ -5,8 +5,10 @@ var graphedData = [];
 var width = 1250,
     height = 270;
 var startTime = 0;
-var interval = 6000;
-//var interval = 5;
+//var interval = 6000
+var interval2 = 6000;
+var interval3 = 6000;
+var interval4 = 6000;
 var currentIndex = 0;
 var currentTime, nextTime;
 var x, y, valueline;
@@ -112,7 +114,21 @@ function updateGraph(/*svg, valueline, */market_id) {
                 .attr("stroke-dashoffset", 0)*/;
         var masking = path.getBBox();
         var maskingWidth = masking.width;
-        d3.select("#clip>rect").transition().duration(interval + 6000).ease("linear").attr("width", maskingWidth);
+            switch (market_id){
+                case 2:
+                 d3.select("#clip>rect").transition().duration(interval2).ease("linear").attr("width", maskingWidth);
+                break;
+
+                case 3:
+                 d3.select("#clip>rect").transition().duration(interval3).ease("linear").attr("width", maskingWidth);
+                break;
+
+                case 4:
+                 d3.select("#clip>rect").transition().duration(interval4).ease("linear").attr("width", maskingWidth);
+                break;
+
+            }
+       // d3.select("#clip>rect").transition().duration(interval).ease("linear").attr("width", maskingWidth);
 
         console.log("updateGraph!");
         graphedData.forEach(function(data, index) {
@@ -217,16 +233,29 @@ function tick(svg, valueline) {
             updateGraph(/*svg, valueline, */market.market_id);
             updateValue();
             if (marketData[currentIndex].value == 0) {
-                console.log("marketVlae");
+                console.log("marketValue");
                 drawExplosion(marketData[currentIndex]);
             }
             socket.emit('updateValue', {
                 'market_id': market.market_id,
                 'value': marketData[currentIndex].value
-               // 'isObject': true  //from felix
             });
             currentIndex++;
-            setTimeout(tick, (nextTime - currentTime) * interval);
+            switch (market.market_id){
+                case 2:
+                 setTimeout(tick, interval2);//(nextTime - currentTime) * interval);
+                break;
+
+                case 3:
+                 setTimeout(tick, interval3);//(nextTime - currentTime) * interval);
+                break;
+
+                case 4:
+                 setTimeout(tick, interval4);//(nextTime - currentTime) * interval);
+                break;
+
+            }
+           // setTimeout(tick, interval);//(nextTime - currentTime) * interval);
         }
     }
 }
