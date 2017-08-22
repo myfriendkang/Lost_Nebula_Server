@@ -130,11 +130,17 @@ function updateGraph(/*svg, valueline, */market_id) {
 }
 
 function updateValue() {
-    $('#valueNum').html(marketData[currentIndex].value);
+    $('#valueNum').addClass('pulsate').html(marketData[currentIndex].value);
+    setTimeout(function() {
+        $('#valueNum').removeClass('pulsate');
+    }, 600);
 }
 
 function updateQuantity() {
-    $('#quantityNum').html(market.quantity);
+    $('#quantityNum').addClass('pulsate').html(market.quantity);
+    setTimeout(function() {
+        $('#valueNum').removeClass('pulsate');
+    }, 600);
 }
 
 function normalExplosion(data, market_id) {
