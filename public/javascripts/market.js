@@ -69,7 +69,7 @@ function drawGraph(market_id) {
         });
         var path = svg.append("path").attr("class", "line").attr("id", "svgGraph").attr("clip-path", "url(#clip)")
             //.attr("d", valueline(graphedData))
-            .attr("transform", "translate(50,0)");
+            .attr("transform", "translate(53,0)"); //position of the path
         /*
      svg.append("g")
 		.attr("class", "x axis")
@@ -77,7 +77,7 @@ function drawGraph(market_id) {
 		.call(xAxis);
  */
         svg.append("g").attr("class", "y axis").attr("transform", "translate(48,0)").call(yAxis);
-        svg.append('g').attr('class', 'explosions').attr("transform", "translate(50,0)");
+        svg.append('g').attr('class', 'explosions').attr("transform", "translate(53,0)"); //position of explosion
         tick(svg, valueline);
     });
 }
