@@ -4,9 +4,11 @@ var marketData = [];
 var graphedData = [];
 var width = 1250,
     height = 270;
-var startTime = 25;
-var interval = 6000;
-//var interval = 5;
+var startTime = 0;
+//var interval = 6000
+var interval2 = 6000;
+var interval3 = 6000;
+var interval4 = 6000;
 var currentIndex = 0;
 var currentTime, nextTime;
 var x, y, valueline;
@@ -16,9 +18,9 @@ var _currentIndex = 0;
 var _currentTime, _nextTime;
 
 $(document).ready(function() {
-   //socket = io.connect('http://192.168.1.139:8080');// Kyue ip address
-  
-   socket = io.connect('http://localhost:8080');//
+   socket = io.connect('http://192.168.1.139:8080');// Keyu ip address
+   //socket = io.connect('http://192.168.1.11:8080');// Felix ip address
+   //socket = io.connect('http://localhost:8080');//
     socket.on('resetMarkets', function(data) {
         market = data[parseInt(window.location.href.slice(-1))];
         currentTime = startTime;
@@ -41,15 +43,16 @@ function drawGraph(market_id) {
     $('.graph').html('');
     var svg = d3.select('.graph').append('svg').attr('class', 'chart').attr('width', width + 50).attr('height', height + 50);
     svg.append("defs").append("clipPath").attr("id", "clip").append("rect").attr("width", width).attr("height", height);
-   // d3.csv("http://192.168.1.139:8080/data/data" + market_id + ".csv", function(err, data) {
-    d3.csv("http://localhost:8080/data/data" + market_id + ".csv", function(err, data) {
-        data.forEach(function(d, i) {
+    d3.csv("http://192.168.1.139:8080/data/data" + market_id + ".csv", function(err, data) {// Keyu ip address
+    //d3.csv("http://192.168.1.11:8080/data/data" + market_id + ".csv", function(err, data) {// Felix ip address
+    //d3.csv("http://localhost:8080/data/data" + market_id + ".csv", function(err, data) {
+        data.forEach(function(d) {  //deleted i, draw simple whole graph in one time
             d.time = parseInt(d.time);
             d.value = parseInt(d.value);
-            if (d.time <= startTime) {
-                currentIndex = i;
-                graphedData.push(d);
-            }
+//            if (d.time <= startTime) {
+//                currentIndex = i;
+//                graphedData.push(d);
+//            }
         });
         marketData = data;
         // console.log(data);
@@ -66,7 +69,7 @@ function drawGraph(market_id) {
         });
         var path = svg.append("path").attr("class", "line").attr("id", "svgGraph").attr("clip-path", "url(#clip)")
             //.attr("d", valueline(graphedData))
-            .attr("transform", "translate(50,0)");
+            .attr("transform", "translate(53,0)"); //position of the path
         /*
      svg.append("g")
 		.attr("class", "x axis")
@@ -74,7 +77,7 @@ function drawGraph(market_id) {
 		.call(xAxis);
  */
         svg.append("g").attr("class", "y axis").attr("transform", "translate(48,0)").call(yAxis);
-        svg.append('g').attr('class', 'explosions').attr("transform", "translate(50,0)");
+        svg.append('g').attr('class', 'explosions').attr("transform", "translate(53,0)"); //position of explosion
         tick(svg, valueline);
     });
 }
@@ -112,7 +115,21 @@ function updateGraph(/*svg, valueline, */market_id) {
                 .attr("stroke-dashoffset", 0)*/;
         var masking = path.getBBox();
         var maskingWidth = masking.width;
-        d3.select("#clip>rect").transition().duration(interval + 5000).ease("linear").attr("width", maskingWidth);
+            switch (market_id){
+                case 2:
+                 d3.select("#clip>rect").transition().duration(interval2).ease("linear").attr("width", maskingWidth);
+                break;
+
+                case 3:
+                 d3.select("#clip>rect").transition().duration(interval3).ease("linear").attr("width", maskingWidth);
+                break;
+
+                case 4:
+                 d3.select("#clip>rect").transition().duration(interval4).ease("linear").attr("width", maskingWidth);
+                break;
+
+            }
+       // d3.select("#clip>rect").transition().duration(interval).ease("linear").attr("width", maskingWidth);
 
         console.log("updateGraph!");
         graphedData.forEach(function(data, index) {
@@ -130,11 +147,17 @@ function updateGraph(/*svg, valueline, */market_id) {
 }
 
 function updateValue() {
-    $('#valueNum').html(marketData[currentIndex].value);
+    $('#valueNum').addClass('pulsate').html(marketData[currentIndex].value);
+    setTimeout(function() {
+        $('#valueNum').removeClass('pulsate');
+    }, 600);
 }
 
 function updateQuantity() {
-    $('#quantityNum').html(market.quantity);
+    $('#quantityNum').addClass('pulsate').html(market.quantity);
+    setTimeout(function() {
+        $('#valueNum').removeClass('pulsate');
+    }, 600);
 }
 
 function normalExplosion(data, market_id) {
@@ -211,16 +234,29 @@ function tick(svg, valueline) {
             updateGraph(/*svg, valueline, */market.market_id);
             updateValue();
             if (marketData[currentIndex].value == 0) {
-                console.log("marketVlae");
+                console.log("marketValue");
                 drawExplosion(marketData[currentIndex]);
             }
             socket.emit('updateValue', {
                 'market_id': market.market_id,
                 'value': marketData[currentIndex].value
-               // 'isObject': true  //from felix
             });
             currentIndex++;
-            setTimeout(tick, (nextTime - currentTime) * interval);
+            switch (market.market_id){
+                case 2:
+                 setTimeout(tick, interval2);//(nextTime - currentTime) * interval);
+                break;
+
+                case 3:
+                 setTimeout(tick, interval3);//(nextTime - currentTime) * interval);
+                break;
+
+                case 4:
+                 setTimeout(tick, interval4);//(nextTime - currentTime) * interval);
+                break;
+
+            }
+           // setTimeout(tick, interval);//(nextTime - currentTime) * interval);
         }
     }
 }
